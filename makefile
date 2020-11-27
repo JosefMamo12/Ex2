@@ -5,10 +5,13 @@ AR= ar
 
 all:mains
 
-mains: myBank.o  mains.o
-	$(AR) -rcs -o Ex2.a myBank.o  mains.o
+mains: main.o myBanks
+	$(CC) $(FLAGS) -o mains main.o libmyBank.a
 
-main.o: main.c myBank.h 
+myBanks: myBank.o 
+	$(AR) -rcs -o libmyBank.a myBank.o
+
+main.o: main.c myBank.h
 	$(CC) $(FLAGS) -c main.c
 
 myBank.o: myBank.c myBank.h
@@ -17,4 +20,4 @@ myBank.o: myBank.c myBank.h
 .PHONY:clean all	
 
 clean:
-	-rm *o  
+	-rm *o mains libmyBank.a

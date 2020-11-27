@@ -1,25 +1,20 @@
-#include <myBank.h>
+#include "myBank.h"
 #include <stdio.h>
-#include <stdbool.h>
-
 
 int const accountsLength = 50, FIRSTBANKACCOUNT = 901, LASTBANKACCOUNTS = 950, usedAccounts = 1;
 int k = 0, z = 0;
 double accounts[50][2];
 
-init()
+void init()
 {
     for (size_t i = 0; i < accountsLength; i++)
     {
-        for (size_t j = 0; j < 2; i++)
-        {
-            accounts[i][usedAccounts] = 0; //Intialize all the bank accounts to be zero means account not open.
-        }
+        accounts[i][usedAccounts] = 0; //Intialize all the bank accounts to be zero means account not open.
     }
 }
+
 int initial_deposit(double amount)
 {
-
     for (size_t i = 0; i < 50; i++)
     {
         if (accounts[i][usedAccounts] == 0)
@@ -34,47 +29,47 @@ int initial_deposit(double amount)
 }
 double return_amount(int bank_account)
 {
-    if (accounts[LASTBANKACCOUNTS - bank_account][usedAccounts] == 1)
+    if (accounts[bank_account - FIRSTBANKACCOUNT][usedAccounts] == 1)
     {
-        return accounts[LASTBANKACCOUNTS - bank_account][0];
+        return accounts[bank_account - FIRSTBANKACCOUNT][0];
     }
 
     return __DBL_MAX__;
 }
 double add_balance_amount(int bank_account, double amount)
 {
-    if (accounts[LASTBANKACCOUNTS - bank_account][usedAccounts] == 1)
+    if (accounts[bank_account - FIRSTBANKACCOUNT][usedAccounts] == 1)
     {
-        accounts[LASTBANKACCOUNTS - bank_account][0] += amount;
-        return accounts[LASTBANKACCOUNTS - bank_account][0];
+        accounts[bank_account - FIRSTBANKACCOUNT][0] += amount;
+        return accounts[bank_account - FIRSTBANKACCOUNT][0];
     }
     return __DBL_MAX__;
 }
-double add_balance_amount(int bank_account, double amount)
+double sub_balance_amount(int bank_account, double amount)
 {
-    if (accounts[LASTBANKACCOUNTS - bank_account][usedAccounts] == 0)
+    if (accounts[bank_account - FIRSTBANKACCOUNT][usedAccounts] == 0)
     {
         return __DBL_MAX__;
     }
-    else if (accounts[LASTBANKACCOUNTS - bank_account][0] < amount)
+    else if (accounts[bank_account - FIRSTBANKACCOUNT][0] < amount)
     {
         return __DBL_MIN__;
     }
     else
     {
-        accounts[LASTBANKACCOUNTS - bank_account][0] -= amount;
+        accounts[bank_account - FIRSTBANKACCOUNT][0] -= amount;
     }
-    return accounts[LASTBANKACCOUNTS - bank_account][0];
+    return accounts[bank_account - FIRSTBANKACCOUNT][0];
 }
-bool close_bank_account(int bank_account)
+int close_bank_account(int bank_account)
 {
-    if (accounts[LASTBANKACCOUNTS - bank_account][usedAccounts] == 0)
+    if (accounts[bank_account - FIRSTBANKACCOUNT][usedAccounts] == 0)
     {
-        return false;
+        return 0;
     }
-    accounts[LASTBANKACCOUNTS - bank_account][0] = 0;
-    accounts[LASTBANKACCOUNTS - bank_account][usedAccounts] = 0;
-    return true;
+    accounts[bank_account - FIRSTBANKACCOUNT][0] = 0;
+    accounts[bank_account - FIRSTBANKACCOUNT][usedAccounts] = 0;
+    return 1;
 }
 void interest_effect(double interest, int clientCounter)
 {
@@ -96,7 +91,7 @@ void print_all_acitve_bank_accounts(int clientCounter)
         if (accounts[i][usedAccounts] == 1)
         {
             z++;
-            printf("The balance of the account %d is %0.2lf/n", i + FIRSTBANKACCOUNT, accounts[i][0]);
+            printf("The balance of the account %ld is %0.2lf\n", i + FIRSTBANKACCOUNT, accounts[i][0]);
         }
     }
 }
