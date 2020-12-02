@@ -3,14 +3,14 @@
 #include <float.h>
 
 int const accountsLength = 50, FIRSTBANKACCOUNT = 901, LASTBANKACCOUNTS = 950, usedAccounts = 1;
-int k = 0, clientCounter = 0, bank_account = 0;
-double accounts[50][2] ={0} , amount = 0, interest = 0;
+int k = 0, clientCounter = 0, bank_account = 0, interest = 0;
+double accounts[50][2] = {0}, amount = 0;
 
 void initial_deposit()
 {
     if (clientCounter < accountsLength)
     {
-        printf("Please enter amount for deposit\n");
+        printf("Please enter amount for deposit: ");
         if (scanf("%lf", &amount) == 1)
         {
             if (amount > 0)
@@ -23,146 +23,154 @@ void initial_deposit()
                         accounts[i][1] = 1;
                         k = i;
                         clientCounter++;
-                        printf("The bank new bank account number is %d\n", k + FIRSTBANKACCOUNT);
+                        printf("New account number is: %d\n", k + FIRSTBANKACCOUNT);
                         break;
                     }
                 }
             }
             else
             {
-                printf("The amount is less than 0\n");
+                printf("Invalid Amount\n");
             }
         }
         else
         {
-            printf("Failed to read this ammount\n");
+            printf("Failed to read the ammount\n");
         }
     }
     else
     {
         printf("The bank is full\n");
     }
+    return;
 }
 void return_amount()
 {
-    printf("Please type bank account number to see the balance\n");
+    printf("Please enter account number: ");
     if (scanf("%d", &bank_account) == 1)
     {
         if (bank_account <= LASTBANKACCOUNTS && bank_account >= FIRSTBANKACCOUNT)
         {
             if (accounts[bank_account - FIRSTBANKACCOUNT][usedAccounts] == 1)
             {
-                printf("The account %d have balance of %0.2lf\n", bank_account, accounts[bank_account - FIRSTBANKACCOUNT][0]);
+                printf("The balance of account number %d is:  %0.2lf\n", bank_account, accounts[bank_account - FIRSTBANKACCOUNT][0]);
             }
             else
             {
-                printf("This bank account is closed\n");
+                printf("This account is closed\n");
             }
         }
         else
         {
-            printf("This bank account is not exist in our system\n");
+            printf("This account is not exist in our system\n");
         }
     }
     else
     {
-        printf("Failed to read this bank account\n");
+        printf("Failed to read the account number\n");
     }
+    return;
 }
 void add_balance_amount()
 {
-    printf("Please type bank account number\n");
+    printf("Please enter account number: ");
     if (scanf("%d", &bank_account) == 1)
     {
         if (bank_account <= LASTBANKACCOUNTS && bank_account >= FIRSTBANKACCOUNT)
         {
-            printf("Please enter amount for deposit\n");
-            if (scanf("%lf", &amount) == 1)
+            if (accounts[bank_account - FIRSTBANKACCOUNT][usedAccounts] == 1)
             {
-                if (amount > 0)
+                printf("Please enter the amount to deposit: ");
+                if (scanf("%lf", &amount) == 1)
                 {
-                    if (accounts[bank_account - FIRSTBANKACCOUNT][usedAccounts] == 1)
+                    if (amount > 0)
                     {
+
                         accounts[bank_account - FIRSTBANKACCOUNT][0] += amount;
-                        printf("The balance of the account %d is now %0.2lf\n", bank_account, accounts[bank_account - FIRSTBANKACCOUNT][0]);
+                        printf("The new balance is: %0.2lf\n", accounts[bank_account - FIRSTBANKACCOUNT][0]);
                     }
                     else
                     {
-                        printf("The bank account %d is closed\n", bank_account);
+                        printf("Cannot deposit a negative amount\n");
                     }
                 }
                 else
                 {
-                    printf("The amount is less than 0");
+                    printf("Failed to read the amount\n");
                 }
             }
             else
             {
-                printf("Failed to read this ammount\n");
+                printf("This account is closed\n");
             }
         }
         else
         {
-            printf("This bank account is not exist in our system\n");
+            printf("Invalid account number\n");
         }
     }
     else
     {
-        printf("Failed to read this bank account\n");
+
+        printf("Failed to read the account number\n");
     }
+    return;
 }
 void sub_balance_amount()
 {
-    printf("Please type bank account number\n");
+    printf("Please enter account number: ");
+    double amountForThisProgram;
     if (scanf("%d", &bank_account) == 1)
     {
         if (bank_account <= LASTBANKACCOUNTS && bank_account >= FIRSTBANKACCOUNT)
         {
-            printf("Please enter amount for deposit\n");
-            if (scanf("%lf", &amount) == 1)
+            if (accounts[bank_account - FIRSTBANKACCOUNT][usedAccounts] == 1)
             {
-                if (amount > 0)
+                printf("Please enter amount to withdraw: ");
+                if (scanf("%lf", &amountForThisProgram) == 1)
                 {
-                    if (accounts[bank_account - FIRSTBANKACCOUNT][0] > amount)
+                    if (amountForThisProgram < 0)
                     {
-                        if (accounts[bank_account - FIRSTBANKACCOUNT][usedAccounts] == 1)
+                        if (accounts[bank_account - FIRSTBANKACCOUNT][0] > amountForThisProgram)
                         {
-                            accounts[bank_account - FIRSTBANKACCOUNT][0] -= amount;
-                            printf("The balance of the account %d after the transaction is %0.2lf\n", bank_account, accounts[bank_account - FIRSTBANKACCOUNT][0]);
+
+                            accounts[bank_account - FIRSTBANKACCOUNT][0] -= amountForThisProgram;
+                            printf("The new balance is: %0.2lf\n", accounts[bank_account - FIRSTBANKACCOUNT][0]);
                         }
                         else
                         {
-                            printf("This bank account is closed\n");
+                            printf("Cannot withdraw more than the balance\n");
                         }
                     }
                     else
                     {
-                        printf("The amount is more than the balance\n");
+                        printf("Cannot withdraw negative amount\n");
                     }
                 }
                 else
                 {
-                    printf("The amount is less than 0\n");
+                    printf("Failed to read this ammount\n");
                 }
             }
             else
             {
-                printf("Failed to read this ammount\n");
+                printf("This account is closed\n");
             }
         }
         else
         {
-            printf("This bank account is not exist in our system\n");
+            printf("Invalid account number\n");
         }
     }
     else
     {
-        printf("Failed to read this bank account\n");
+        printf("Failed to read the account number\n");
     }
+    return;
 }
 void close_bank_account()
 {
-    printf("Please type bank account number:");
+    printf("Please enter account number: ");
     if (scanf("%d", &bank_account) == 1)
     {
         if (bank_account <= LASTBANKACCOUNTS && bank_account >= FIRSTBANKACCOUNT)
@@ -172,11 +180,11 @@ void close_bank_account()
                 accounts[bank_account - FIRSTBANKACCOUNT][0] = 0;
                 accounts[bank_account - FIRSTBANKACCOUNT][usedAccounts] = 0;
                 clientCounter--;
-                printf("The bank account %d is now closed\n", bank_account);
+                printf("Closed account number %d\n", bank_account);
             }
             else
             {
-                printf("This bank account is already closed \n");
+                printf("This account is already closed \n");
             }
         }
         else
@@ -186,41 +194,38 @@ void close_bank_account()
     }
     else
     {
-        printf("Failed to read this bank account\n");
+        printf("Failed to read the account number\n");
     }
+    return;
 }
 void interest_effect()
 {
-    if (clientCounter > 0)
-    {
-        printf("Please enter interest rate:");
-        if (scanf("%lf", &interest) == 1)
-        {
-            if (interest > -100 && interest < 100)
-            {
 
-                for (size_t i = 0; i < 50; i++)
-                {
-                    if (accounts[i][usedAccounts] == 1)
-                    {
-                        accounts[i][0] += accounts[i][0] * interest / 100;
-                    }
-                }
-            }
-            else
+    printf("Please enter interest rate: ");
+    if (scanf("%d", &interest) == 1)
+    {
+        if (interest > 0)
+        {
+
+            for (size_t i = 0; i < 50; i++)
             {
-                printf("The interest %0.2lf is out of our scale please type new one between to -99 to 99\n", interest);
+                if (accounts[i][usedAccounts] == 1)
+                {
+                    accounts[i][0] += accounts[i][0] * interest / 100;
+                }
             }
         }
         else
         {
-            printf("Failed to read the interest rate\n");
+            printf("Invalid interest rate\n");
         }
     }
     else
     {
-        printf("All bank accounts are closed.\n");
+        printf("Failed to read the interest rate\n");
     }
+
+    return;
 }
 void print_all_acitve_bank_accounts()
 {
@@ -230,14 +235,12 @@ void print_all_acitve_bank_accounts()
         {
             if (accounts[i][usedAccounts] == 1)
             {
-                printf("The balance of the account %ld is %0.2lf\n", i + FIRSTBANKACCOUNT, accounts[i][0]);
+                printf("The balance of account number %ld is:  %0.2lf\n", i + FIRSTBANKACCOUNT, accounts[i][0]);
             }
         }
+       
     }
-    else
-    {
-        printf("All bank accounts are closed.\n");
-    }
+     return;
 }
 void close_all_the_bank_accounts()
 {
@@ -256,4 +259,6 @@ void close_all_the_bank_accounts()
     {
         printf("All bank accounts are already closed.\n");
     }
+
+    return;
 }
